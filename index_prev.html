@@ -130,30 +130,44 @@
             dataID++;
         });
 
+        console.log(pittsData)
+
         // Draw Left Card
         // Scatter Plot
         const xScatterScale = d3.scaleLinear()
             .domain([0, 5])
-            .range([margin3.left, scatterWidth-margin3.right]);
+            .range([margin3.left+40, scatterWidth-margin3.right]);
         const yScatterScale = d3.scaleLinear()
             .domain([0, d3.max(pittsData, d => d.review_count)])
-            .range([scatterHeight-margin3.bottom, margin3.top]);
-        // Add the points to Scatter Plot
-        let circs = scatterPlot.append('g')
+            .range([scatterHeight-margin3.bottom-10, margin3.top]);
+        const xScatterAxis = d3.axisBottom(xScatterScale);
+
+        scatterPlot.append("g")
+                .attr("transform", `translate(0, ${scatterHeight - margin3.bottom-10})`)
+                .call(xScatterAxis);
+
+        const yScatterAxis = d3.axisLeft(yScatterScale);
+
+        scatterPlot.append("g")
+                .attr("transform", `translate(${margin3.left+ 40}, 0)`)
+                .call(yScatterAxis);
+
+        let scatterDots = scatterPlot.append('g')
             .selectAll("circle")
             .data(pittsData)
             .join("circle")
             .attr("id", d => ("id_" + d.id))
-            .attr("r", 0)
             .attr("cx", d => xScatterScale(d.rating))
             .attr("cy", d => yScatterScale(d.review_count))
-            .style("fill", "white");
+            .attr("r", 0)
+            .style("fill", "antiquewhite")
+            .attr("transform", `translate(0, -5)`);
         // define the transition
         const transition = d3.transition()
             .duration(750)
             .ease(d3.easeLinear);
         // add a transition to the circles
-        circs.transition(transition)
+        scatterDots.transition(transition)
             .attr("cx", d => xScatterScale(d.rating))
             .attr("cy", d => yScatterScale(d.review_count))
             .attr("r", 5)
@@ -190,33 +204,45 @@
 
         const xBarScale = d3.scaleBand()
             .domain(dataBar.map(d => d.type))
-            .range([margin3.left+20, barWidth]).padding(0.2);
+            .range([margin3.left+40, barWidth-10]).padding(0.1);
 
         const yBarScale = d3.scaleLinear()
             .domain([0, d3.max(dataBar, d => d.count)])
-            .range([barHeight-margin3.bottom, margin3.top+10]);
+            .range([barHeight - 30, margin3.top-15]);
+
+        const xBarAxis = d3.axisBottom(xBarScale);
+
+        barChart.append("g")
+            .attr("transform", `translate(0, ${barHeight - margin3.bottom})`)
+            .call(xBarAxis);
+
+        const yBarAxis = d3.axisLeft(yBarScale);
+
+        barChart.append("g")
+                .attr("transform", `translate(${margin3.left+40}, 0)`) // move the y-axis to the left
+                .call(yBarAxis);
 
         barChart.selectAll("rect")
             .data(dataBar)
-            .enter()
-            .append("rect")
+            .join("rect")
             .attr("id", d => ("type_" + d.type))
             .attr("x",d => xBarScale(d.type))
             .attr("width", xBarScale.bandwidth())
             .style("fill", "darkseagreen")
+            .attr("transform", `translate(0, -30)`)
             .attr("y", barHeight)
             .attr("height", 0)
             .transition() // bar animation
-            .duration(650)
-            .attr("y", d => yBarScale(d.count))
-            .attr("height", d => barHeight - yBarScale(d.count));
+            .duration(750)
+                .attr("y", d => yBarScale(d.count))
+                .attr("height", d => barHeight - yBarScale(d.count));
 
         // Axis labels:
         barChart.append("text")
             .attr("text-anchor", "end")
             .attr("font-size", "15")
             .attr("x", barWidth/2+40)
-            .attr("y", barHeight-5 )
+            .attr("y", barHeight-3 )
             .text("Category");
         barChart.append("text")
             .attr("text-anchor", "end")
