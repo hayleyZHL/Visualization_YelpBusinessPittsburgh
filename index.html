@@ -6,8 +6,7 @@
     <script src="https://d3js.org/topojson.v3.min.js"></script>
     <title>Yelp Business Finder For Pittsburgh</title>
 </head>
-<body style="background-color: 
-white">
+<body style="background-color: #EBECE2">
 <br>
 <div style = "text-align: center;">
     <h1 style="color: darkslategray;">Yelp Business Finder For Pittsburgh</h1>
@@ -396,10 +395,7 @@ white">
             .style("opacity", 0);
         const bgRect = viewport2.append("rect")
             .attr("x", 0)
-            .attr("y", height/1.7) // assuming font-size is 18px
-            .attr("width", "260")
-            .attr("height", "180")
-            .attr("fill", "#FDB10B");
+            .attr("y", height/1.7);
         const tooltip = d3.select("body").append("div")
             .attr("class", "tooltip")
             .style("position", "absolute")
@@ -482,7 +478,7 @@ white">
             // dots
             circles = viewport.selectAll("circle").data(filteredData, d => d.Position);
             circles.exit().remove();
-            circles.enter()
+            let mapCircles = circles.enter()
                 .append("circle")
                 .attr("r", circleSize)
                 .attr("opacity", 0.7)
@@ -513,13 +509,6 @@ white">
                     d3.select(event.currentTarget)
                         .attr("fill", "red");
                     selectedCircle = d3.select(event.currentTarget);
-
-                // here
-                // circles.transition(transition)
-                //     .attr("cx", d => xScatterScale(d.rating))
-                //     .attr("cy", d => yScatterScale(d.review_count))
-                //     .attr("r", 5)
-                //     .style("fill", "#acc864");
 
                 // create a tooltip element and position it relative to the mouse pointer
                 const imageName = `${d.type}.png`;
@@ -557,7 +546,10 @@ white">
                     .style("opacity", 1)
                     .call(wrap, 250);
                 bgRect.transition()
-                    .style("opacity", 1)
+                    .style("opacity", 1) // assuming font-size is 18px
+                    .attr("width", "260")
+                    .attr("height", "180")
+                    .attr("fill", "#FDB10B")
                 snippetTitle
                     .text("Highlighted Comment:")
                     .transition()
