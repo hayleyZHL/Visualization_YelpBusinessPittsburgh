@@ -497,7 +497,7 @@ white">
                     tooltip.html(`<span style="font-weight:bold;">Name: </span> ${d.name}<br><span style="font-weight:bold;">Type: </span> ${d.type}<br><span style="font-weight:bold;">Category: </span> ${d.category}<br>`)
                         .style("left", (event.pageX + 10) + "px")
                         .style("top", (event.pageY - 20) + "px");
-                    d3.select(event.currentTarget).style("cursor", "pointer").attr("stroke", "red").attr("stroke-width", "7px");
+                    d3.select(event.currentTarget).style("cursor", "pointer").style("opacity", 1).attr("stroke", "#EA592A").attr("stroke-width", "7px");
                 })
                 .on("mouseout", () => {
                     tooltip.transition()
@@ -514,71 +514,78 @@ white">
                         .attr("fill", "red");
                     selectedCircle = d3.select(event.currentTarget);
 
-                    // create a tooltip element and position it relative to the mouse pointer
-                    const imageName = `${d.type}.png`;
-                    const typeImage = icon_list[d.category];
-                    nameText.text(d.name)
-                        .transition()
-                        .style("opacity", 1)
-                        .call(wrap, 250);
-                    nameText.on("mouseover", (event, d)  => {
-                        d3.select(event.currentTarget).style("cursor", "pointer")
-                            .style("fill", "blue");
+                // here
+                // circles.transition(transition)
+                //     .attr("cx", d => xScatterScale(d.rating))
+                //     .attr("cy", d => yScatterScale(d.review_count))
+                //     .attr("r", 5)
+                //     .style("fill", "#acc864");
+
+                // create a tooltip element and position it relative to the mouse pointer
+                const imageName = `${d.type}.png`;
+                const typeImage = icon_list[d.category];
+                nameText.text(d.name)
+                    .transition()
+                    .style("opacity", 1)
+                    .call(wrap, 250);
+                nameText.on("mouseover", (event, d)  => {
+                    d3.select(event.currentTarget).style("cursor", "pointer")
+                        .style("fill", "blue");
+                })
+                    .on("mouseout", (event, d) => {
+                        d3.select(event.currentTarget).style("cursor", "default")
+                            .style("fill", "black");
                     })
-                        .on("mouseout", (event, d) => {
-                            d3.select(event.currentTarget).style("cursor", "default")
-                                .style("fill", "black");
-                        })
-                    nameText.on("click", () => {
-                        window.open(d.url, "_blank");
-                    });
-                    myImage.attr("xlink:href", d.image_url)
-                        .transition()
-                        .style("opacity", 1);
-                    type.attr("xlink:href", imageName)
-                        .transition()
-                        .style("opacity", 1);
-                    categories.attr("xlink:href", typeImage)
-                        .transition()
-                        .style("opacity", 1);
-                    typeText.text(d.type)
-                        .transition()
-                        .style("opacity", 1)
-                        .call(wrap, 250);
-                    categoriesText.text(d.category)
-                        .transition()
-                        .style("opacity", 1)
-                        .call(wrap, 250);
-                    bgRect.transition()
-                        .style("opacity", 1)
-                    snippetTitle
-                        .text("Highlighted Comment:")
-                        .transition()
-                        .style("opacity", 1)
-                        .call(wrap, 250);
-                    snippet.text(d.snippet)
-                        .transition()
-                        .style("opacity", 1)
-                        .call(wrap, 250);
-                    snippet.raise();
-                    snippetTitle.raise();
-                    review_count.text('Review Count: ' + d.review_count)
-                        .transition()
-                        .style("opacity", 1)
-                        .call(wrap, 250);
-                    /* rate.text('Rate: ' + d.rating)
-                        .transition()
-                        .style("opacity", 1)
-                        .call(wrap, 250); */
-                    star.attr("xlink:href", `${d.rating}.png`)
-                        .transition()
-                        .style("opacity", 1);
-                    location.text('Location: ' + d.neighborhood)
-                        .transition()
-                        .style("opacity", 1)
-                        .call(wrap, 250);
+                nameText.on("click", () => {
+                    window.open(d.url, "_blank");
                 });
-                viewport.call(zoom.transform, zoomLevel);
+                myImage.attr("xlink:href", d.image_url)
+                    .transition()
+                    .style("opacity", 1);
+                type.attr("xlink:href", imageName)
+                    .transition()
+                    .style("opacity", 1);
+                categories.attr("xlink:href", typeImage)
+                    .transition()
+                    .style("opacity", 1);
+                typeText.text(d.type)
+                    .transition()
+                    .style("opacity", 1)
+                    .call(wrap, 250);
+                categoriesText.text(d.category)
+                    .transition()
+                    .style("opacity", 1)
+                    .call(wrap, 250);
+                bgRect.transition()
+                    .style("opacity", 1)
+                snippetTitle
+                    .text("Highlighted Comment:")
+                    .transition()
+                    .style("opacity", 1)
+                    .call(wrap, 250);
+                snippet.text(d.snippet)
+                    .transition()
+                    .style("opacity", 1)
+                    .call(wrap, 250);
+                snippet.raise();
+                snippetTitle.raise();
+                review_count.text('Review Count: ' + d.review_count)
+                    .transition()
+                    .style("opacity", 1)
+                    .call(wrap, 250);
+                /* rate.text('Rate: ' + d.rating)
+                    .transition()
+                    .style("opacity", 1)
+                    .call(wrap, 250); */
+                star.attr("xlink:href", `${d.rating}.png`)
+                    .transition()
+                    .style("opacity", 1);
+                location.text('Location: ' + d.neighborhood)
+                    .transition()
+                    .style("opacity", 1)
+                    .call(wrap, 250);
+            });
+            viewport.call(zoom.transform, zoomLevel);
         }
         // Draw initial circles
         update();
