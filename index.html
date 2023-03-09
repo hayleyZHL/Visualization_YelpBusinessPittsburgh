@@ -493,7 +493,7 @@
                     tooltip.html(`<span style="font-weight:bold;">Name: </span> ${d.name}<br><span style="font-weight:bold;">Type: </span> ${d.type}<br><span style="font-weight:bold;">Category: </span> ${d.category}<br>`)
                         .style("left", (event.pageX + 10) + "px")
                         .style("top", (event.pageY - 20) + "px");
-                    d3.select(event.currentTarget).style("cursor", "pointer").style("opacity", 1).attr("stroke", "#EA592A").attr("stroke-width", "7px");
+                    d3.select(event.currentTarget).style("cursor", "pointer").attr("stroke", "#EA592A").attr("stroke-width", "7px");
                 })
                 .on("mouseout", () => {
                     tooltip.transition()
