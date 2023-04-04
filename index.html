@@ -245,6 +245,7 @@
                 .style("stroke", "white")
                 .style("fill", "#FDB10B");
         }
+
         // Draw Map
         let pittsNeighborhoods = topojson.feature(pittsGeo, pittsGeo.objects.Neighborhoods_);
         let projection = d3.geoMercator().fitSize([vpWidth, vpHeight], pittsNeighborhoods);
@@ -256,7 +257,9 @@
             .attr("stroke", "white")
             .attr("stroke-width", 1.8)
             .attr("d", d => path(d.geometry));
-        pittsData.forEach(d => { d.Position = projection([d.longitude, d.latitude]); });
+        pittsData.forEach(d => {
+            d.Position = projection([d.longitude, d.latitude]);
+        });
 
         // Draw Right Card
         const createTextElement = (elem, x, y, fontSize, opacity) => elem.append("text").attr("x", x).attr("y", y).attr("font-size", fontSize).attr("fill", "black").style("word-wrap", "break-word;").style("text-align", "center").style("opacity", opacity).style("font-family", "sans-serif");
@@ -345,16 +348,27 @@
                 categorySelector.style("visibility", visibility);
             }
 
-            if (selectedType != "none") { filteredData = filteredData.filter(d => d.type === selectedType); }
-            if (selectedType != "food") { handleCategoryVisibility("hidden");
-            } else { handleCategoryVisibility("visible"); }
+            if (selectedType != "none") {
+                filteredData = filteredData.filter(d => d.type === selectedType);
+            }
+            if (selectedType != "food") {
+                handleCategoryVisibility("hidden");
+            } else {
+                handleCategoryVisibility("visible");
+            }
 
             let selectedStar = starSelector.node().value;
-            if (selectedStar != "none") { filteredData = filteredData.filter(d => d.rating === Number(selectedStar)); }
+            if (selectedStar != "none") {
+                filteredData = filteredData.filter(d => d.rating === Number(selectedStar));
+            }
             let selectedCategory = categorySelector.node().value;
-            if (selectedCategory != "none") { filteredData = filteredData.filter(d => d.category === selectedCategory); }
+            if (selectedCategory != "none") {
+                filteredData = filteredData.filter(d => d.category === selectedCategory);
+            }
             let circleSize = 4;
-            if (circles != "empty") { zoomLevel = d3.zoomTransform(svg.node()); }
+            if (circles != "empty") {
+                zoomLevel = d3.zoomTransform(svg.node());
+            }
 
             circles = viewport.selectAll("circle").data(filteredData, d => d.Position);
             circles.exit().remove();
@@ -379,7 +393,9 @@
                     tooltip.transition()
                         .duration(200)
                         .style("opacity", 0);
-                    if (selectedCircle !== null && selectedCircle.node() === event.currentTarget) { return; }
+                    if (selectedCircle !== null && selectedCircle.node() === event.currentTarget) {
+                        return;
+                    }
                     d3.select(event.currentTarget).style("cursor", "default").attr("stroke", "None").attr("stroke-width", "0");
                 })
                 .on("click", (event, d) => {
@@ -456,6 +472,7 @@
                 });
             viewport.call(zoom.transform, zoomLevel);
         }
+
         // Draw initial circles
         update();
     }
