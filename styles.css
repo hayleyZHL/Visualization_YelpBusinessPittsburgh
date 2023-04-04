@@ -1,0 +1,26 @@
+body {
+    background-color: #EBECE2;
+}
+
+.container {
+    text-align: center;
+    width: 1500px;
+    margin: auto;
+}
+
+.header-text {
+    color: darkslategray;
+}
+
+.svg-card {
+    margin: 5px;
+    background-color: antiquewhite;
+    text-align: center;
+    border: 2px solid black;
+}
+
+.svg-main-map {
+    margin: 5px;
+    background-color: #fcf5f2;
+    border: 2px solid black;
+}
